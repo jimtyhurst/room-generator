@@ -9,5 +9,8 @@ wheels/
 # Virtual environments
 .venv
 
+# IDE configurations
+.zed/
+
 # Mac OS-specific storage files
 .DS_Store

@@ -1,10 +1,11 @@
 # room-generator
 
-This app generates a set Inform 7 rooms.
+This app generates a set of Inform 7 rooms.
 
-- Room names are assigned randomly.
-- Rooms are connected randomly.
-- Each room contains a unique item chosen at random.
+- Room names are assigned from a list of room names.
+- Rooms are connected breadth first from the list of generated rooms.
+- Each room contains one unique item from a list of object names.
+- A TEST command is generated for one path from the starting room to a "leaf" node room, which has no exits, except to return to the previous room.
 
 ## License
 
