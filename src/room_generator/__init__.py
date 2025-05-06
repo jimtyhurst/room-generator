@@ -7,7 +7,7 @@ def build_room(name: str) -> dict:
     }
 
 
-def build_rooms(room_names, rooms):
+def build_rooms(room_names: deque, rooms: list):
     if len(room_names) <= 0:
         return rooms
     else:
@@ -16,17 +16,22 @@ def build_rooms(room_names, rooms):
         return build_rooms(room_names, rooms)
 
 
-def add_things_to_rooms(rooms, things):
+def add_things_to_rooms(rooms: list, things: list) -> list:
     if len(rooms) > 0:
         for i in range(0, len(rooms)):
             if i < len(things):
-                rooms[i]['things'] = [things[i]]
+                if isinstance(things[i], list):
+                    rooms[i]['things'] = things[i]
+                elif isinstance(things[i], str):
+                    rooms[i]['things'] = [things[i]]
+                else:
+                    rooms[i]['things'] = []
             else:
                 rooms[i]['things'] = []
     return rooms
 
 
-def generate(room_names, thing_names):
+def generate(room_names: list[str], thing_names: list) -> list:
     if len(room_names) <= 0:
         return []
     else:

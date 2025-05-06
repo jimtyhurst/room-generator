@@ -1,7 +1,7 @@
 import room_generator
 
 ROOM_NAMES = ['New York City', 'Los Angeles', 'Chicago', 'Houston', 'Phoenix']
-THINGS = ['cat', 'dog', 'key', 'painting', 'phone']
+THING_NAMES = ['cat', 'dog', ['key', 'lockbox'], 'painting', 'phone']
 
 
 def test_generate_empty_list():
@@ -22,12 +22,12 @@ def test_generate_2_rooms():
 
 
 def test_generate_rooms_with_things():
-    assert room_generator.generate(ROOM_NAMES, THINGS) == [
-        {'room': 'New York City', 'things': ['cat']},
-        {'room': 'Los Angeles', 'things': ['dog']},
-        {'room': 'Chicago', 'things': ['key']},
-        {'room': 'Houston', 'things': ['painting']},
-        {'room': 'Phoenix', 'things': ['phone']},
+    assert room_generator.generate(ROOM_NAMES, THING_NAMES) == [
+        {'room': ROOM_NAMES[0], 'things': [THING_NAMES[0]]},
+        {'room': ROOM_NAMES[1], 'things': [THING_NAMES[1]]},
+        {'room': ROOM_NAMES[2], 'things': THING_NAMES[2]},
+        {'room': ROOM_NAMES[3], 'things': [THING_NAMES[3]]},
+        {'room': ROOM_NAMES[4], 'things': [THING_NAMES[4]]},
     ]
 
 
