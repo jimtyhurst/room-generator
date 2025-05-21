@@ -79,7 +79,15 @@ def test_2_rooms_add_things_to_rooms():
 
 
 def test_to_inform7_empty_list():
-    code = room_generator.to_inform7(
-        room_generator.generate(ROOM_NAMES, THING_NAMES)
-    )
+    code = room_generator.to_inform7([])
     assert code == '[Generated rooms]'
+
+
+def test_to_inform7_one_room():
+    code = room_generator.to_inform7(
+        room_generator.generate(ROOM_NAMES[2:3], THING_NAMES[2:3])
+    )
+    assert (
+        code
+        == '[Generated rooms]\nChicago is a Room.\nkey is in Chicago.\nlockbox is in Chicago.'
+    )

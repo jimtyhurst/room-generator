@@ -55,7 +55,16 @@ def generate(room_names: list[str], thing_names: list) -> list:
     return connected_rooms
 
 
-def to_inform7(rooms: list) -> str:
-    accumulator = '[Generated rooms]'
+def room_to_inform7(room):
+    code = [f'{room["room"]} is a Room.']
+    if room['things'] is not None:
+        for thing in room['things']:
+            code.append(f'{thing} is in {room["room"]}.')
+    return str('\n').join(code)
 
-    return accumulator
+
+def to_inform7(rooms: list) -> str:
+    accumulator = ['[Generated rooms]']
+    for room in rooms:
+        accumulator.append(room_to_inform7(room))
+    return '\n'.join(accumulator)
