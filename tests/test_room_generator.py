@@ -5,30 +5,36 @@ THING_NAMES = ['cat', 'dog', ['key', 'lockbox'], 'painting', 'phone']
 
 
 def test_generate_empty_list():
-    assert room_generator.generate([], []) == []
+    assert room_generator.generate([], ['paintbrush']) == []
 
 
 def test_generate_1_room():
     assert room_generator.generate(['Portland'], []) == [
-        {'room': 'Portland', 'things': []},
+        {'room': 'Portland', 'things': [], 'exits': []},
     ]
 
 
 def test_generate_2_rooms():
     assert room_generator.generate(['Portland', 'Corvallis'], []) == [
-        {'room': 'Portland', 'things': []},
-        {'room': 'Corvallis', 'things': []},
+        {'room': 'Portland', 'things': [], 'exits': [{'sw': 'Corvallis'}]},
+        {'room': 'Corvallis', 'things': [], 'exits': []},
     ]
 
 
 def test_generate_rooms_with_things():
-    assert room_generator.generate(ROOM_NAMES, THING_NAMES) == [
-        {'room': ROOM_NAMES[0], 'things': [THING_NAMES[0]]},
-        {'room': ROOM_NAMES[1], 'things': [THING_NAMES[1]]},
-        {'room': ROOM_NAMES[2], 'things': THING_NAMES[2]},
-        {'room': ROOM_NAMES[3], 'things': [THING_NAMES[3]]},
-        {'room': ROOM_NAMES[4], 'things': [THING_NAMES[4]]},
-    ]
+    rooms = room_generator.generate(ROOM_NAMES, THING_NAMES)
+    print(f'{rooms[0]=}')
+    assert len(rooms) == 5
+    assert rooms[0] == {
+        'room': ROOM_NAMES[0],
+        'things': [THING_NAMES[0]],
+        'exits': [{'sw': ROOM_NAMES[1]}, {'se': ROOM_NAMES[2]}],
+    }
+    assert rooms[4] == {
+        'room': ROOM_NAMES[4],
+        'things': [THING_NAMES[4]],
+        'exits': [],
+    }
 
 
 def test_1_item_add_things_to_rooms():
