@@ -23,12 +23,21 @@ def test_generate_2_rooms():
 
 def test_generate_rooms_with_things():
     rooms = room_generator.generate(ROOM_NAMES, THING_NAMES)
-    print(f'{rooms[0]=}')
+    print(f'{rooms[0]=}')  # DEBUG
+    print(f'{rooms[1]=}')  # DEBUG
+    print(f'{rooms[2]=}')  # DEBUG
+    print(f'{rooms[-2]=}')  # DEBUG
+    print(f'{rooms[-1]=}')  # DEBUG
     assert len(rooms) == 5
     assert rooms[0] == {
         'room': ROOM_NAMES[0],
         'things': [THING_NAMES[0]],
         'exits': [{'sw': ROOM_NAMES[1]}, {'se': ROOM_NAMES[2]}],
+    }
+    assert rooms[1] == {
+        'room': ROOM_NAMES[1],
+        'things': [THING_NAMES[1]],
+        'exits': [{'sw': ROOM_NAMES[3]}, {'se': ROOM_NAMES[4]}],
     }
     assert rooms[4] == {
         'room': ROOM_NAMES[4],
@@ -67,3 +76,10 @@ def test_2_rooms_add_things_to_rooms():
         {'room': expected_room_1, 'things': [expected_thing_1]},
         {'room': expected_room_2, 'things': [expected_thing_2]},
     ]
+
+
+def test_to_inform7_empty_list():
+    code = room_generator.to_inform7(
+        room_generator.generate(ROOM_NAMES, THING_NAMES)
+    )
+    assert code == '[Generated rooms]'
