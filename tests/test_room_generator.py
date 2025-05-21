@@ -87,7 +87,27 @@ def test_to_inform7_one_room():
     code = room_generator.to_inform7(
         room_generator.generate(ROOM_NAMES[2:3], THING_NAMES[2:3])
     )
+    print(f'{code=}')  # DEBUG
     assert (
         code
-        == '[Generated rooms]\nChicago is a Room.\nkey is in Chicago.\nlockbox is in Chicago.'
+        == '[Generated rooms]\n'
+        + '\nChicago is a Room.'
+        + '\nkey is a thing in Chicago.'
+        + '\nlockbox is a thing in Chicago.'
+    )
+
+
+def test_to_inform7_room_connections():
+    code = room_generator.to_inform7(
+        room_generator.generate(ROOM_NAMES[2:4], THING_NAMES[2:4])
+    )
+    print(f'{code=}')  # DEBUG
+    assert (
+        code
+        == '[Generated rooms]\n'
+        + '\nChicago is a Room.'
+        + '\nkey is a thing in Chicago.'
+        + '\nlockbox is a thing in Chicago.'
+        + '\n\nHouston is a Room.'
+        + '\npainting is a thing in Houston.'
     )

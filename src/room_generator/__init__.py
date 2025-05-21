@@ -56,10 +56,10 @@ def generate(room_names: list[str], thing_names: list) -> list:
 
 
 def room_to_inform7(room):
-    code = [f'{room["room"]} is a Room.']
+    code = [f'\n{room["room"]} is a Room.']
     if room['things'] is not None:
         for thing in room['things']:
-            code.append(f'{thing} is in {room["room"]}.')
+            code.append(f'{thing} is a thing in {room["room"]}.')
     return str('\n').join(code)
 
 
