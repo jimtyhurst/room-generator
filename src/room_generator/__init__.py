@@ -38,9 +38,9 @@ def connect_rooms(rooms: list) -> list:
             j = (2 * i) + 1
             rooms[i]['exits'] = []
             if j < n_rooms:
-                rooms[i]['exits'].append({'southwest': rooms[j]['room']})
+                rooms[i]['exits'].append({'south': rooms[j]['room']})
             if (j + 1) < n_rooms:
-                rooms[i]['exits'].append({'southeast': rooms[j + 1]['room']})
+                rooms[i]['exits'].append({'east': rooms[j + 1]['room']})
     return rooms
 
 
