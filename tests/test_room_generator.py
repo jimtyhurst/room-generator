@@ -5,30 +5,49 @@ THING_NAMES = ['cat', 'dog', ['key', 'lockbox'], 'painting', 'phone']
 
 
 def test_generate_empty_list():
-    assert room_generator.generate([], []) == []
+    assert room_generator.generate([], ['paintbrush']) == []
 
 
 def test_generate_1_room():
     assert room_generator.generate(['Portland'], []) == [
-        {'room': 'Portland', 'things': []},
+        {'room': 'Portland', 'things': [], 'exits': []},
     ]
 
 
 def test_generate_2_rooms():
     assert room_generator.generate(['Portland', 'Corvallis'], []) == [
-        {'room': 'Portland', 'things': []},
-        {'room': 'Corvallis', 'things': []},
+        {
+            'room': 'Portland',
+            'things': [],
+            'exits': [{'southwest': 'Corvallis'}],
+        },
+        {'room': 'Corvallis', 'things': [], 'exits': []},
     ]
 
 
-def test_generate_rooms_with_things():
-    assert room_generator.generate(ROOM_NAMES, THING_NAMES) == [
-        {'room': ROOM_NAMES[0], 'things': [THING_NAMES[0]]},
-        {'room': ROOM_NAMES[1], 'things': [THING_NAMES[1]]},
-        {'room': ROOM_NAMES[2], 'things': THING_NAMES[2]},
-        {'room': ROOM_NAMES[3], 'things': [THING_NAMES[3]]},
-        {'room': ROOM_NAMES[4], 'things': [THING_NAMES[4]]},
-    ]
+def test_generate_multiple_rooms():
+    rooms = room_generator.generate(ROOM_NAMES, THING_NAMES)
+    print(f'{rooms[0]=}')  # DEBUG
+    print(f'{rooms[1]=}')  # DEBUG
+    print(f'{rooms[2]=}')  # DEBUG
+    print(f'{rooms[-2]=}')  # DEBUG
+    print(f'{rooms[-1]=}')  # DEBUG
+    assert len(rooms) == 5
+    assert rooms[0] == {
+        'room': ROOM_NAMES[0],
+        'things': [THING_NAMES[0]],
+        'exits': [{'southwest': ROOM_NAMES[1]}, {'southeast': ROOM_NAMES[2]}],
+    }
+    assert rooms[1] == {
+        'room': ROOM_NAMES[1],
+        'things': [THING_NAMES[1]],
+        'exits': [{'southwest': ROOM_NAMES[3]}, {'southeast': ROOM_NAMES[4]}],
+    }
+    assert rooms[4] == {
+        'room': ROOM_NAMES[4],
+        'things': [THING_NAMES[4]],
+        'exits': [],
+    }
 
 
 def test_1_item_add_things_to_rooms():
@@ -61,3 +80,39 @@ def test_2_rooms_add_things_to_rooms():
         {'room': expected_room_1, 'things': [expected_thing_1]},
         {'room': expected_room_2, 'things': [expected_thing_2]},
     ]
+
+
+def test_to_inform7_empty_list():
+    code = room_generator.to_inform7([])
+    assert code == '[Generated rooms]'
+
+
+def test_to_inform7_one_room():
+    code = room_generator.to_inform7(
+        room_generator.generate(ROOM_NAMES[2:3], THING_NAMES[2:3])
+    )
+    print(f'{code=}')  # DEBUG
+    assert (
+        code
+        == '[Generated rooms]\n'
+        + '\nChicago is a room.'
+        + '\nkey is a thing in Chicago.'
+        + '\nlockbox is a thing in Chicago.'
+    )
+
+
+def test_to_inform7_two_rooms_with_room_connections():
+    code = room_generator.to_inform7(
+        room_generator.generate(ROOM_NAMES[2:4], THING_NAMES[2:4])
+    )
+    print(f'{code=}')  # DEBUG
+    assert (
+        code
+        == '[Generated rooms]\n'
+        + '\nChicago is a room.'
+        + '\nkey is a thing in Chicago.'
+        + '\nlockbox is a thing in Chicago.'
+        + '\nHouston is southwest of Chicago.'
+        + '\n\nHouston is a room.'
+        + '\npainting is a thing in Houston.'
+    )
