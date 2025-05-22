@@ -4,8 +4,9 @@ This app generates a set of Inform 7 rooms.
 
 - Room names are assigned from a list of room names.
 - Rooms are connected breadth first from the list of generated rooms.
-- Each room contains one unique item from a list of object names.
-- A TEST command is generated for one path from the starting room to a "leaf" node room, which has no exits, except to return to the previous room.
+- Each room contains zero or more unique items from a list of object names.
+- A TEST command is generated for one path from the starting room to a "leaf" node room, which has no exits.
+- The generator does not create loop paths.
 
 ## License
 

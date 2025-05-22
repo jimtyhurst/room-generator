@@ -19,7 +19,7 @@ def test_generate_2_rooms():
         {
             'room': 'Portland',
             'things': [],
-            'exits': [{'southwest': 'Corvallis'}],
+            'exits': [{'south': 'Corvallis'}],
         },
         {'room': 'Corvallis', 'things': [], 'exits': []},
     ]
@@ -27,21 +27,16 @@ def test_generate_2_rooms():
 
 def test_generate_multiple_rooms():
     rooms = room_generator.generate(ROOM_NAMES, THING_NAMES)
-    print(f'{rooms[0]=}')  # DEBUG
-    print(f'{rooms[1]=}')  # DEBUG
-    print(f'{rooms[2]=}')  # DEBUG
-    print(f'{rooms[-2]=}')  # DEBUG
-    print(f'{rooms[-1]=}')  # DEBUG
     assert len(rooms) == 5
     assert rooms[0] == {
         'room': ROOM_NAMES[0],
         'things': [THING_NAMES[0]],
-        'exits': [{'southwest': ROOM_NAMES[1]}, {'southeast': ROOM_NAMES[2]}],
+        'exits': [{'south': ROOM_NAMES[1]}, {'east': ROOM_NAMES[2]}],
     }
     assert rooms[1] == {
         'room': ROOM_NAMES[1],
         'things': [THING_NAMES[1]],
-        'exits': [{'southwest': ROOM_NAMES[3]}, {'southeast': ROOM_NAMES[4]}],
+        'exits': [{'south': ROOM_NAMES[3]}, {'east': ROOM_NAMES[4]}],
     }
     assert rooms[4] == {
         'room': ROOM_NAMES[4],
@@ -91,7 +86,6 @@ def test_to_inform7_one_room():
     code = room_generator.to_inform7(
         room_generator.generate(ROOM_NAMES[2:3], THING_NAMES[2:3])
     )
-    print(f'{code=}')  # DEBUG
     assert (
         code
         == '[Generated rooms]\n'
@@ -105,14 +99,39 @@ def test_to_inform7_two_rooms_with_room_connections():
     code = room_generator.to_inform7(
         room_generator.generate(ROOM_NAMES[2:4], THING_NAMES[2:4])
     )
-    print(f'{code=}')  # DEBUG
     assert (
         code
         == '[Generated rooms]\n'
         + '\nChicago is a room.'
         + '\nkey is a thing in Chicago.'
         + '\nlockbox is a thing in Chicago.'
-        + '\nHouston is southwest of Chicago.'
+        + '\nHouston is south of Chicago.'
         + '\n\nHouston is a room.'
         + '\npainting is a thing in Houston.'
     )
+
+
+def test_testable_path_empty_list():
+    path = room_generator.testable_path([])
+    assert path == []
+
+
+def test_testable_path_one_room():
+    path = room_generator.testable_path(
+        [{'room': 'Houston', 'things': ['painting'], 'exits': []}]
+    )
+    assert path == []
+
+
+def test_testable_path_two_rooms():
+    path = room_generator.testable_path(
+        [
+            {
+                'room': 'Chicago',
+                'things': ['key', 'lockbox'],
+                'exits': [{'east': 'New York City'}],
+            },
+            {'room': 'New York City', 'things': ['cat'], 'exits': []},
+        ]
+    )
+    assert path == ['east']
