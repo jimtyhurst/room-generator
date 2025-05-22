@@ -27,11 +27,6 @@ def test_generate_2_rooms():
 
 def test_generate_multiple_rooms():
     rooms = room_generator.generate(ROOM_NAMES, THING_NAMES)
-    print(f'{rooms[0]=}')  # DEBUG
-    print(f'{rooms[1]=}')  # DEBUG
-    print(f'{rooms[2]=}')  # DEBUG
-    print(f'{rooms[-2]=}')  # DEBUG
-    print(f'{rooms[-1]=}')  # DEBUG
     assert len(rooms) == 5
     assert rooms[0] == {
         'room': ROOM_NAMES[0],
@@ -91,7 +86,6 @@ def test_to_inform7_one_room():
     code = room_generator.to_inform7(
         room_generator.generate(ROOM_NAMES[2:3], THING_NAMES[2:3])
     )
-    print(f'{code=}')  # DEBUG
     assert (
         code
         == '[Generated rooms]\n'
@@ -105,7 +99,6 @@ def test_to_inform7_two_rooms_with_room_connections():
     code = room_generator.to_inform7(
         room_generator.generate(ROOM_NAMES[2:4], THING_NAMES[2:4])
     )
-    print(f'{code=}')  # DEBUG
     assert (
         code
         == '[Generated rooms]\n'
@@ -116,3 +109,29 @@ def test_to_inform7_two_rooms_with_room_connections():
         + '\n\nHouston is a room.'
         + '\npainting is a thing in Houston.'
     )
+
+
+def test_testable_path_empty_list():
+    path = room_generator.testable_path([])
+    assert path == []
+
+
+def test_testable_path_one_room():
+    path = room_generator.testable_path(
+        [{'room': 'Houston', 'things': ['painting'], 'exits': []}]
+    )
+    assert path == []
+
+
+def test_testable_path_two_rooms():
+    path = room_generator.testable_path(
+        [
+            {
+                'room': 'Chicago',
+                'things': ['key', 'lockbox'],
+                'exits': [{'east': 'New York City'}],
+            },
+            {'room': 'New York City', 'things': ['cat'], 'exits': []},
+        ]
+    )
+    assert path == ['east']

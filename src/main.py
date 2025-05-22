@@ -13,6 +13,7 @@ ROOM_NAMES = [
     'Hall Bathroom',
     'Home Office',
 ]
+
 THING_NAMES = [
     'a coat rack',
     ['a cat', 'a sofa', 'some lamps'],
@@ -30,7 +31,10 @@ THING_NAMES = [
 def generate(room_names, thing_names):
     rooms = room_generator.generate(ROOM_NAMES, THING_NAMES)
     code_snippet = room_generator.to_inform7(rooms)
-    return code_snippet
+    test_code = room_generator.path_to_inform7(
+        room_generator.testable_path(rooms)
+    )
+    return code_snippet + '\n\n' + test_code
 
 
 if __name__ == '__main__':

@@ -1,4 +1,6 @@
 from collections import deque
+import random
+from typing import Optional
 
 
 def build_room(name: str) -> dict:
@@ -68,7 +70,54 @@ def room_to_inform7(room):
 
 
 def to_inform7(rooms: list) -> str:
-    accumulator = ['[Generated rooms]']
+    accumulator = [
+        '['
+        + '\n  Generated rooms'
+        + '\n  Jim Tyhurst'
+        + '\n  Generator code: https://github.com/jimtyhurst/room-generator'
+        '\n]'
+    ]
     for room in rooms:
         accumulator.append(room_to_inform7(room))
     return '\n'.join(accumulator)
+
+
+def find_room(room_name: str, rooms: list) -> Optional[dict]:
+    the_room = None
+    index = 0
+    while the_room is None and index < len(rooms):
+        if room_name == rooms[index]['room']:
+            the_room = rooms[index]
+        index += 1
+    return the_room
+
+
+def testable_path(rooms: list) -> list:
+    accumulator = []
+    if len(rooms) > 0:
+        room_name = rooms[0]['room']
+        while room_name is not None:
+            room = find_room(room_name, rooms)
+            if room is None:
+                room_name = None
+            else:
+                if room['exits'] is None:
+                    room_name = None
+                else:
+                    qty_exits = len(room['exits'])
+                    if qty_exits < 1:
+                        room_name = None
+                    else:
+                        exit_index = random.randint(0, qty_exits - 1)
+                        direction = list(
+                            enumerate(room['exits'][exit_index].keys())
+                        )[0][1]
+                        room_name = list(
+                            enumerate(room['exits'][exit_index].values())
+                        )[0][1]
+                        accumulator.append(direction)
+    return accumulator
+
+
+def path_to_inform7(path: list[str]) -> str:
+    return '[Generated test]\nTest path with ' + '"' + ' / '.join(path) + '"'
