@@ -1,8 +1,30 @@
 import room_generator
 
 
-ROOM_NAMES = ['New York City', 'Los Angeles', 'Chicago', 'Houston', 'Phoenix']
-THING_NAMES = ['cat', 'dog', ['key', 'lockbox'], 'painting', 'phone']
+ROOM_NAMES = [
+    'Entry Hall',
+    'Living Room',
+    'Family Room',
+    'Dining Room',
+    'Kitchen',
+    'Master Bedroom',
+    'Master Bathroom',
+    'Childs Bedroom',
+    'Hall Bathroom',
+    'Home Office',
+]
+THING_NAMES = [
+    'a coat rack',
+    ['a cat', 'a sofa', 'some lamps'],
+    'a dog',
+    ['a dining table'],
+    ['a kitchen table', 'a wok'],
+    ['a kingsize bed', 'a dresser'],
+    ['a razor', 'a hair brush'],
+    ['a painting', 'a phone'],
+    'a hand towel',
+    ['a key', 'a lockbox'],
+]
 
 
 def generate(room_names, thing_names):
