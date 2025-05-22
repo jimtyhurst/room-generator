@@ -38,9 +38,9 @@ def connect_rooms(rooms: list) -> list:
             j = (2 * i) + 1
             rooms[i]['exits'] = []
             if j < n_rooms:
-                rooms[i]['exits'].append({'sw': rooms[j]['room']})
+                rooms[i]['exits'].append({'southwest': rooms[j]['room']})
             if (j + 1) < n_rooms:
-                rooms[i]['exits'].append({'se': rooms[j + 1]['room']})
+                rooms[i]['exits'].append({'southeast': rooms[j + 1]['room']})
     return rooms
 
 
@@ -56,10 +56,14 @@ def generate(room_names: list[str], thing_names: list) -> list:
 
 
 def room_to_inform7(room):
-    code = [f'\n{room["room"]} is a Room.']
+    code = [f'\n{room["room"]} is a room.']
     if room['things'] is not None:
         for thing in room['things']:
             code.append(f'{thing} is a thing in {room["room"]}.')
+    if room['exits'] is not None:
+        for x in room['exits']:
+            for _, (key, value) in enumerate(x.items()):
+                code.append(f'{value} is {key} of {room["room"]}.')
     return str('\n').join(code)
 
 

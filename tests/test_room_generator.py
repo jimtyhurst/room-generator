@@ -16,12 +16,16 @@ def test_generate_1_room():
 
 def test_generate_2_rooms():
     assert room_generator.generate(['Portland', 'Corvallis'], []) == [
-        {'room': 'Portland', 'things': [], 'exits': [{'sw': 'Corvallis'}]},
+        {
+            'room': 'Portland',
+            'things': [],
+            'exits': [{'southwest': 'Corvallis'}],
+        },
         {'room': 'Corvallis', 'things': [], 'exits': []},
     ]
 
 
-def test_generate_rooms_with_things():
+def test_generate_multiple_rooms():
     rooms = room_generator.generate(ROOM_NAMES, THING_NAMES)
     print(f'{rooms[0]=}')  # DEBUG
     print(f'{rooms[1]=}')  # DEBUG
@@ -32,12 +36,12 @@ def test_generate_rooms_with_things():
     assert rooms[0] == {
         'room': ROOM_NAMES[0],
         'things': [THING_NAMES[0]],
-        'exits': [{'sw': ROOM_NAMES[1]}, {'se': ROOM_NAMES[2]}],
+        'exits': [{'southwest': ROOM_NAMES[1]}, {'southeast': ROOM_NAMES[2]}],
     }
     assert rooms[1] == {
         'room': ROOM_NAMES[1],
         'things': [THING_NAMES[1]],
-        'exits': [{'sw': ROOM_NAMES[3]}, {'se': ROOM_NAMES[4]}],
+        'exits': [{'southwest': ROOM_NAMES[3]}, {'southeast': ROOM_NAMES[4]}],
     }
     assert rooms[4] == {
         'room': ROOM_NAMES[4],
@@ -91,13 +95,13 @@ def test_to_inform7_one_room():
     assert (
         code
         == '[Generated rooms]\n'
-        + '\nChicago is a Room.'
+        + '\nChicago is a room.'
         + '\nkey is a thing in Chicago.'
         + '\nlockbox is a thing in Chicago.'
     )
 
 
-def test_to_inform7_room_connections():
+def test_to_inform7_two_rooms_with_room_connections():
     code = room_generator.to_inform7(
         room_generator.generate(ROOM_NAMES[2:4], THING_NAMES[2:4])
     )
@@ -105,9 +109,10 @@ def test_to_inform7_room_connections():
     assert (
         code
         == '[Generated rooms]\n'
-        + '\nChicago is a Room.'
+        + '\nChicago is a room.'
         + '\nkey is a thing in Chicago.'
         + '\nlockbox is a thing in Chicago.'
-        + '\n\nHouston is a Room.'
+        + '\nHouston is southwest of Chicago.'
+        + '\n\nHouston is a room.'
         + '\npainting is a thing in Houston.'
     )
